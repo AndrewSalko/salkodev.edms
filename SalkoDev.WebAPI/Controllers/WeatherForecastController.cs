@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web.Resource;
-using SalkoDev.WebAPI.Data;
 using SalkoDev.WebAPI.Models;
 using System;
 using System.Collections.Generic;
