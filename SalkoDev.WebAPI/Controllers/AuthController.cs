@@ -51,7 +51,8 @@ namespace SalkoDev.WebAPI
 					return Ok(new RegistrationResponse()
 					{
 						Success = true,
-						Token = jwtToken
+						Token = jwtToken.JWT,
+						Expires=jwtToken.Expires
 					});
 				}
 				else
@@ -92,39 +93,46 @@ namespace SalkoDev.WebAPI
 				return Ok(new RegistrationResponse()
 				{
 					Success = true,
-					Token = jwtToken
+					Token = jwtToken.JWT,
+					Expires=jwtToken.Expires
 				});
 			}
 
 			return BadRequest(new RegistrationResponse("Invalid payload", false));
 		}
 
-		string _GenerateJwtToken(User user)
+		JWTInfo _GenerateJwtToken(User user)
 		{
-			var jwtTokenHandler = new JwtSecurityTokenHandler();
+			//https://www.c-sharpcorner.com/article/authentication-and-authorization-in-asp-net-5-with-jwt-and-swagger/
 
-			var key = Encoding.ASCII.GetBytes(_JWTConfig.Secret);
-
-			var tokenDescriptor = new SecurityTokenDescriptor
+			var authClaims = new Claim[]
 			{
-				Subject = new ClaimsIdentity(new[]
-				{
-					new Claim("Id", user.Id.ToString()),
-					new Claim(JwtRegisteredClaimNames.Email, user.Email),
-					new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-					new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-				}),
-				Expires = DateTime.UtcNow.AddHours(6),
-				SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+				new Claim("Id", user.Id.ToString()),
+				new Claim(JwtRegisteredClaimNames.Email, user.Email),
+				new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
 			};
 
-			var token = jwtTokenHandler.CreateToken(tokenDescriptor);
+			var key = Encoding.ASCII.GetBytes(_JWTConfig.Secret);
+			var signCreds = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature);
+
+			var token = new JwtSecurityToken(
+				//	issuer: _configuration["JWT:ValidIssuer"],
+				//	audience: _configuration["JWT:ValidAudience"],
+				expires: DateTime.Now.AddHours(48),
+				claims: authClaims,
+				signingCredentials: signCreds
+				);
+
+			//token.
+
+			var jwtTokenHandler = new JwtSecurityTokenHandler();
+
 			var jwtToken = jwtTokenHandler.WriteToken(token);
 
-			return jwtToken;
+			var result = new JWTInfo(jwtToken, token.ValidTo);
+			return result;
 		}
-
-
 
 	}
 }

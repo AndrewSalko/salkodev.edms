@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace SalkoDev.WebAPI.Models.Auth
@@ -11,6 +12,12 @@ namespace SalkoDev.WebAPI.Models.Auth
 		}
 
 		public bool Success
+		{
+			get;
+			set;
+		}
+
+		public DateTime Expires
 		{
 			get;
 			set;
