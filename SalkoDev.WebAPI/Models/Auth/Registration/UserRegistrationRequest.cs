@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SalkoDev.WebAPI.Models.Auth
+namespace SalkoDev.WebAPI.Models.Auth.Registration
 {
 	public class UserRegistrationRequest
 	{

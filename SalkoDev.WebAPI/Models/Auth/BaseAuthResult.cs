@@ -2,22 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
 
 namespace SalkoDev.WebAPI.Models.Auth
 {
-	public class UserLoginRequest
+	public abstract class BaseAuthResult
 	{
-		[Required]
-		[EmailAddress]
-		public string Email
+		public bool Success
 		{
 			get;
 			set;
 		}
-
-		[Required]
-		public string Password
+		public List<string> Errors
 		{
 			get;
 			set;

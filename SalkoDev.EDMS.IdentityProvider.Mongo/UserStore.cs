@@ -115,28 +115,6 @@ namespace SalkoDev.EDMS.IdentityProvider.Mongo
 			user.PasswordHash = passwordHash;
 
 			return Task.CompletedTask;
-
-			//TODO@: будет ли это применяться к уже сущ.юзерам
-
-			////найти юзера по email, установить хеш пароля
-			//if (user == null)
-			//	throw new ArgumentNullException(nameof(user));
-
-			//var email = user.Email;
-			//if (string.IsNullOrEmpty(email))
-			//	throw new ArgumentNullException(nameof(user), "User.Email empty");
-
-			//var emailNorm = email.ToLower();
-			//var resultUser = await(from usr in _Users.AsQueryable() where usr.Email.ToLower() == emailNorm select usr).FirstOrDefaultAsync(cancellationToken);
-
-			//if (resultUser == null)
-			//	throw new ArgumentNullException(nameof(user), $"User with email {emailNorm} not found");
-
-			////установить хеш пароля
-			//var filter = Builders<User>.Filter.Eq(x => x.Id, user.Id);
-			//var update = Builders<User>.Update.Set(x => x.PasswordHash, passwordHash);
-
-			//var updateResult = _Users.UpdateOne(filter, update);
 		}
 
 
@@ -157,9 +135,41 @@ namespace SalkoDev.EDMS.IdentityProvider.Mongo
 			throw new NotImplementedException();
 		}
 
-		public Task<IdentityResult> UpdateAsync(User user, CancellationToken cancellationToken)
+		public async Task<IdentityResult> UpdateAsync(User user, CancellationToken cancellationToken)
 		{
-			throw new NotImplementedException();
+			//найти юзера...сверить, какие поля разные
+
+			var id = user.Id;
+
+			var resultUser = await (from userDB in _Users.AsQueryable() where userDB.Id == id select userDB).FirstOrDefaultAsync(cancellationToken);
+			if (resultUser == null)
+				throw new ArgumentException($"User Id {id.ToString()}");
+
+			var filter = Builders<User>.Filter.Eq(x => x.Id, id);
+
+			List<UpdateDefinition<User>> updateList = new List<UpdateDefinition<User>>();
+
+			if (resultUser.PasswordHash != user.PasswordHash)
+			{
+				var upd = Builders<User>.Update.Set(x => x.PasswordHash, user.PasswordHash);
+				updateList.Add(upd);
+			}
+
+			if (resultUser.Email != user.Email)
+			{
+				var upd = Builders<User>.Update.Set(x => x.Email, user.Email);
+				updateList.Add(upd);
+			}
+
+			if (updateList.Count > 0)
+			{
+				var complexUpd = Builders<User>.Update.Combine(updateList);
+
+				var updateResult = _Users.UpdateOne(filter, complexUpd);
+				//TODO@: сверить результат..?
+			}
+
+			return IdentityResult.Success;
 		}
 
 		public async Task<string> GetPasswordHashAsync(User user, CancellationToken cancellationToken)

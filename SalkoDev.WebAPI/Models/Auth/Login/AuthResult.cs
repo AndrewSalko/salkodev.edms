@@ -1,17 +1,11 @@
 using System;
 using System.Collections.Generic;
 
-namespace SalkoDev.WebAPI.Models.Auth
+namespace SalkoDev.WebAPI.Models.Auth.Login
 {
-	public class AuthResult
+	public class AuthResult: BaseAuthResult
 	{
 		public string Token
-		{
-			get;
-			set;
-		}
-
-		public bool Success
 		{
 			get;
 			set;
@@ -23,10 +17,5 @@ namespace SalkoDev.WebAPI.Models.Auth
 			set;
 		}
 
-		public List<string> Errors
-		{
-			get;
-			set;
-		}
 	}
 }

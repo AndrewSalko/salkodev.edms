@@ -13,6 +13,9 @@ using Microsoft.IdentityModel.Tokens;
 using SalkoDev.EDMS.IdentityProvider.Mongo;
 using SalkoDev.WebAPI.Configuration;
 using SalkoDev.WebAPI.Models.Auth;
+using SalkoDev.WebAPI.Models.Auth.ChangePassword;
+using SalkoDev.WebAPI.Models.Auth.Login;
+using SalkoDev.WebAPI.Models.Auth.Registration;
 
 namespace SalkoDev.WebAPI
 {
@@ -33,73 +36,99 @@ namespace SalkoDev.WebAPI
 		[Route("Register")]
 		public async Task<IActionResult> Register([FromBody] UserRegistrationRequest request)
 		{
-			if (ModelState.IsValid)
+			if (!ModelState.IsValid)
+				return BadRequest(new RegistrationResponse(Resource.InvalidPayload, false));
+
+			var existingUser = await _UserManager.FindByEmailAsync(request.Email);
+
+			if (existingUser != null)
 			{
-				var existingUser = await _UserManager.FindByEmailAsync(request.Email);
-
-				if (existingUser != null)
-				{
-					return BadRequest(new RegistrationResponse("Email already in use", false));
-				}
-
-				var newUser = new User() { Email = request.Email };
-				var isCreated = await _UserManager.CreateAsync(newUser, request.Password);
-				if (isCreated.Succeeded)
-				{
-					var jwtToken = _GenerateJwtToken(newUser);
-
-					return Ok(new RegistrationResponse()
-					{
-						Success = true,
-						Token = jwtToken.JWT,
-						Expires=jwtToken.Expires
-					});
-				}
-				else
-				{
-					return BadRequest(new RegistrationResponse()
-					{
-						Errors = isCreated.Errors.Select(x => x.Description).ToList(),
-						Success = false
-					});
-				}
+				return BadRequest(new RegistrationResponse(Resource.EmailAlreadyInUse, false));
 			}
 
-			return BadRequest(new RegistrationResponse("Invalid payload", false));
-		}
-
-		[HttpPost]
-		[Route("Login")]
-		public async Task<IActionResult> Login([FromBody] UserLoginRequest user)
-		{
-			if (ModelState.IsValid)
+			var newUser = new User() { Email = request.Email };
+			var isCreated = await _UserManager.CreateAsync(newUser, request.Password);
+			if (isCreated.Succeeded)
 			{
-				var existingUser = await _UserManager.FindByEmailAsync(user.Email);
-
-				if (existingUser == null)
-				{
-					return BadRequest(new RegistrationResponse("Invalid login request", false));
-				}
-
-				var isCorrect = await _UserManager.CheckPasswordAsync(existingUser, user.Password);
-
-				if (!isCorrect)
-				{
-					return BadRequest(new RegistrationResponse("Invalid login request", false));
-				}
-
-				var jwtToken = _GenerateJwtToken(existingUser);
+				var jwtToken = _GenerateJwtToken(newUser);
 
 				return Ok(new RegistrationResponse()
 				{
 					Success = true,
 					Token = jwtToken.JWT,
-					Expires=jwtToken.Expires
+					Expires = jwtToken.Expires
+				});
+			}
+			else
+			{
+				return BadRequest(new RegistrationResponse()
+				{
+					Errors = isCreated.Errors.Select(x => x.Description).ToList(),
+					Success = false
+				});
+			}
+		}
+
+		[HttpPost]
+		[Route("Login")]
+		public async Task<IActionResult> Login([FromBody] UserLoginRequest request)
+		{
+			if (!ModelState.IsValid)
+				return BadRequest(new RegistrationResponse(Resource.InvalidPayload, false));
+
+			var existingUser = await _UserManager.FindByEmailAsync(request.Email);
+			if (existingUser == null)
+			{
+				return BadRequest(new RegistrationResponse(Resource.InvalidLoginRequest, false));
+			}
+
+			var isCorrect = await _UserManager.CheckPasswordAsync(existingUser, request.Password);
+			if (!isCorrect)
+			{
+				return BadRequest(new RegistrationResponse(Resource.InvalidLoginRequest, false));
+			}
+
+			var jwtToken = _GenerateJwtToken(existingUser);
+
+			return Ok(new RegistrationResponse()
+			{
+				Success = true,
+				Token = jwtToken.JWT,
+				Expires=jwtToken.Expires
+			});
+		}
+
+		[HttpPost]
+		[Route("ChangePassword")]
+		public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
+		{
+			if (!ModelState.IsValid)
+				return BadRequest(new RegistrationResponse(Resource.InvalidPayload, false));
+
+			var existingUser = await _UserManager.FindByEmailAsync(request.Email);
+			if (existingUser == null)
+			{
+				return BadRequest(new RegistrationResponse(Resource.InvalidLoginRequest, false));
+			}
+
+			//юзер менеджер сам сверит текущий пароль
+			var result = await _UserManager.ChangePasswordAsync(existingUser, request.CurrentPassword, request.NewPassword);
+
+			if (!result.Succeeded)
+			{
+				return BadRequest(new ChangePasswordResponse()
+				{
+					Errors = result.Errors.Select(x => x.Description).ToList(),
+					Success = false
 				});
 			}
 
-			return BadRequest(new RegistrationResponse("Invalid payload", false));
+			return Ok(new ChangePasswordResponse()
+			{
+				Success = true
+			});
 		}
+
 
 		JWTInfo _GenerateJwtToken(User user)
 		{
