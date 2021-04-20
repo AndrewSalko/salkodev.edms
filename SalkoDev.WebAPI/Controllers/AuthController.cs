@@ -14,6 +14,7 @@ using SalkoDev.EDMS.IdentityProvider.Mongo;
 using SalkoDev.WebAPI.Configuration;
 using SalkoDev.WebAPI.Models.Auth;
 using SalkoDev.WebAPI.Models.Auth.ChangePassword;
+using SalkoDev.WebAPI.Models.Auth.Confirmation;
 using SalkoDev.WebAPI.Models.Auth.Login;
 using SalkoDev.WebAPI.Models.Auth.Registration;
 
@@ -50,6 +51,9 @@ namespace SalkoDev.WebAPI
 			var isCreated = await _UserManager.CreateAsync(newUser, request.Password);
 			if (isCreated.Succeeded)
 			{
+				string emailConfirmToken = await _UserManager.GenerateEmailConfirmationTokenAsync(newUser);
+				//TODO@: отправить его на заданный адрес почты
+
 				var jwtToken = _GenerateJwtToken(newUser);
 
 				return Ok(new RegistrationResponse()
@@ -68,6 +72,37 @@ namespace SalkoDev.WebAPI
 				});
 			}
 		}
+
+		[HttpPost]
+		[Route("ConfirmEmail")]
+		public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailRequest request)
+		{
+			if (!ModelState.IsValid)
+				return BadRequest(new ConfirmEmailResponse(Resource.InvalidPayload, false));
+
+			var user = await _UserManager.FindByEmailAsync(request.Email);
+
+			if (user == null)
+			{
+				return BadRequest(new ConfirmEmailResponse(Resource.InvalidLoginRequest, false));
+			}
+
+			var result = await _UserManager.ConfirmEmailAsync(user, request.ConfirmationToken);
+			if (!result.Succeeded)
+			{
+				return BadRequest(new ConfirmEmailResponse()
+				{
+					Errors = result.Errors.Select(x => x.Description).ToList(),
+					Success = false
+				});
+			}
+
+			return Ok(new ConfirmEmailResponse()
+			{
+				Success = true
+			});
+		}
+
 
 		[HttpPost]
 		[Route("Login")]
