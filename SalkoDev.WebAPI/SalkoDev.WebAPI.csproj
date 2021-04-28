@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SalkoDev.EDMS.IdentityProvider.Mongo\SalkoDev.EDMS.IdentityProvider.Mongo.csproj" />
+    <ProjectReference Include="..\SalkoDev.EmailSend\SalkoDev.EmailSend.csproj" />
   </ItemGroup>
 
   <ItemGroup>

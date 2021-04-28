@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +17,7 @@ using Microsoft.OpenApi.Models;
 using SalkoDev.EDMS.IdentityProvider.Mongo;
 using SalkoDev.EDMS.IdentityProvider.Mongo.Db;
 using SalkoDev.WebAPI.Configuration;
+using SalkoDev.EmailSend;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +45,8 @@ namespace SalkoDev.WebAPI
 			string dbName = "salkodev";
 
 			services.AddTransient<IDatabase>(db => new Database(connString, false, dbName));
+
+			services.AddTransient<IEmailSender>(emailSender => new EmailSender());
 
 			// Identity Services
 			services.AddTransient<IUserStore<User>, UserStore>();

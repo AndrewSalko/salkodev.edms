@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalkoDev.EDMS.IdentityProvi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalkoDev.BaseClasses", "SalkoDev.BaseClasses\SalkoDev.BaseClasses.csproj", "{964FAB69-FDC1-4AAC-9028-4B0EC8A4434C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalkoDev.WebAPI", "SalkoDev.WebAPI\SalkoDev.WebAPI.csproj", "{2FC260AF-D589-442D-AF24-03CB54B6E6D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalkoDev.WebAPI", "SalkoDev.WebAPI\SalkoDev.WebAPI.csproj", "{2FC260AF-D589-442D-AF24-03CB54B6E6D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalkoDev.EmailSend", "SalkoDev.EmailSend\SalkoDev.EmailSend.csproj", "{8AAC7819-A955-4D72-96A7-8DAED88BD955}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{2FC260AF-D589-442D-AF24-03CB54B6E6D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FC260AF-D589-442D-AF24-03CB54B6E6D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FC260AF-D589-442D-AF24-03CB54B6E6D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AAC7819-A955-4D72-96A7-8DAED88BD955}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AAC7819-A955-4D72-96A7-8DAED88BD955}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AAC7819-A955-4D72-96A7-8DAED88BD955}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AAC7819-A955-4D72-96A7-8DAED88BD955}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
