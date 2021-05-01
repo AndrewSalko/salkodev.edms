@@ -117,24 +117,6 @@ namespace SalkoDev.EDMS.IdentityProvider.Mongo
 			return Task.CompletedTask;
 		}
 
-
-
-		#region Not implemented methods
-
-		public Task<string> GetNormalizedUserNameAsync(User user, CancellationToken cancellationToken)
-		{
-			throw new NotImplementedException();
-
-			//https://stackoverflow.com/questions/45340273/explanation-of-getnormalizedusernameasync-and-setnormalizedusernameasync-functio
-			//GetNormalizedUserNameAsync isn't used anywhere in the Identity framework.
-			//return await Task.FromResult(user.Name);
-		}
-
-		public Task SetUserNameAsync(User user, string userName, CancellationToken cancellationToken)
-		{
-			throw new NotImplementedException();
-		}
-
 		public async Task<IdentityResult> UpdateAsync(User user, CancellationToken cancellationToken)
 		{
 			//найти юзера...сверить, какие поля разные
@@ -178,6 +160,54 @@ namespace SalkoDev.EDMS.IdentityProvider.Mongo
 			return await Task.FromResult(user.PasswordHash);
 		}
 
+		public Task<bool> GetEmailConfirmedAsync(User user, CancellationToken cancellationToken)
+		{
+			//в данном случае все достаточно просто - объект юзер уже наполнен свойствами
+			return Task.FromResult(user.EmailConfirmed);
+		}
+
+		public async Task SetEmailConfirmedAsync(User user, bool confirmed, CancellationToken cancellationToken)
+		{
+			var id = user.Id;
+
+			var resultUser = await (from userDB in _Users.AsQueryable() where userDB.Id == id select userDB).FirstOrDefaultAsync(cancellationToken);
+			if (resultUser == null)
+				throw new ArgumentException($"User Id {id}");
+
+			if (resultUser.EmailConfirmed == confirmed)
+			{
+				return; //нечего устанавливать, тек.значение совпадает
+			}
+
+			var filter = Builders<User>.Filter.Eq(x => x.Id, id);
+
+			List<UpdateDefinition<User>> updateList = new List<UpdateDefinition<User>>();
+
+			var upd = Builders<User>.Update.Set(x => x.EmailConfirmed, confirmed);
+			updateList.Add(upd);
+
+			if (updateList.Count > 0)
+			{
+				var complexUpd = Builders<User>.Update.Combine(updateList);
+				var updateResult = _Users.UpdateOne(filter, complexUpd);
+			}
+		}
+
+		#region Not implemented methods
+
+		public Task<string> GetNormalizedUserNameAsync(User user, CancellationToken cancellationToken)
+		{
+			throw new NotImplementedException();
+
+			//https://stackoverflow.com/questions/45340273/explanation-of-getnormalizedusernameasync-and-setnormalizedusernameasync-functio
+			//GetNormalizedUserNameAsync isn't used anywhere in the Identity framework.
+			//return await Task.FromResult(user.Name);
+		}
+
+		public Task SetUserNameAsync(User user, string userName, CancellationToken cancellationToken)
+		{
+			throw new NotImplementedException();
+		}
 
 		public Task<bool> HasPasswordAsync(User user, CancellationToken cancellationToken)
 		{
@@ -188,17 +218,6 @@ namespace SalkoDev.EDMS.IdentityProvider.Mongo
 		{
 			throw new NotImplementedException();
 		}
-
-		public Task<bool> GetEmailConfirmedAsync(User user, CancellationToken cancellationToken)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Task SetEmailConfirmedAsync(User user, bool confirmed, CancellationToken cancellationToken)
-		{
-			throw new NotImplementedException();
-		}
-
 
 		public Task<string> GetNormalizedEmailAsync(User user, CancellationToken cancellationToken)
 		{

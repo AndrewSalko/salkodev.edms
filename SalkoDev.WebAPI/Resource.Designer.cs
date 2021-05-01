@@ -70,6 +70,15 @@ namespace SalkoDev.WebAPI {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email not confirmed.
+        /// </summary>
+        internal static string EmailNotConfirmed {
+            get {
+                return ResourceManager.GetString("EmailNotConfirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid login request.
         /// </summary>
         internal static string InvalidLoginRequest {

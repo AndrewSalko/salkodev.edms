@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -26,11 +27,13 @@ namespace SalkoDev.WebAPI
 	{
 		readonly UserManager<User> _UserManager;
 		readonly JWTConfig _JWTConfig;
+		readonly IEmailSender _EmailSender;
 
-		public AuthController(UserManager<User> userManager, IOptionsMonitor<JWTConfig> optionsMonitor)
+		public AuthController(UserManager<User> userManager, IOptionsMonitor<JWTConfig> optionsMonitor, IEmailSender emailSender)
 		{
 			_UserManager = userManager;
 			_JWTConfig = optionsMonitor.CurrentValue;
+			_EmailSender = emailSender;
 		}
 
 		[HttpPost]
@@ -52,7 +55,11 @@ namespace SalkoDev.WebAPI
 			if (isCreated.Succeeded)
 			{
 				string emailConfirmToken = await _UserManager.GenerateEmailConfirmationTokenAsync(newUser);
-				//TODO@: отправить его на заданный адрес почты
+
+				//отправить его на заданный адрес почты
+				string htmlBody = $"emailConfirmToken: {emailConfirmToken}";
+
+				await _EmailSender.SendEmailAsync(request.Email, "Confirm registration", htmlBody);
 
 				var jwtToken = _GenerateJwtToken(newUser);
 
@@ -121,6 +128,13 @@ namespace SalkoDev.WebAPI
 			if (!isCorrect)
 			{
 				return BadRequest(new RegistrationResponse(Resource.InvalidLoginRequest, false));
+			}
+
+			//убедиться что Email подтвержден
+			bool emailConfirmed = await _UserManager.IsEmailConfirmedAsync(existingUser);
+			if (!emailConfirmed)
+			{
+				return BadRequest(new RegistrationResponse(Resource.EmailNotConfirmed, false));
 			}
 
 			var jwtToken = _GenerateJwtToken(existingUser);

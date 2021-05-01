@@ -60,6 +60,12 @@ namespace SalkoDev.WebAPI
 			//see appsettings.json
 			services.Configure<JWTConfig>(Configuration.GetSection("JWTConfig"));
 
+			//требуем для входа подтв.адрес Email
+			services.Configure<IdentityOptions>(opts =>
+			{
+				opts.SignIn.RequireConfirmedEmail = true;
+			});
+
 			//sqlite
 			//services.AddDbContext<ApiDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
