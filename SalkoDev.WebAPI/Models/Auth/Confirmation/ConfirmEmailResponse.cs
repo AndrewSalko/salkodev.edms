@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SalkoDev.WebAPI.Models.Auth.Confirmation
 {
-	public class ConfirmEmailResponse : BaseAuthResult
+	public class ConfirmEmailResponse : BaseResponse
 	{
 		public ConfirmEmailResponse()
 		{

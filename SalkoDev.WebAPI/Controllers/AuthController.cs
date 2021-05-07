@@ -50,7 +50,12 @@ namespace SalkoDev.WebAPI
 				return BadRequest(new RegistrationResponse(Resource.EmailAlreadyInUse, false));
 			}
 
-			var newUser = new User() { Email = request.Email };
+			var newUser = new User()
+			{
+				Email = request.Email,
+				UserName = request.Name
+			};
+
 			var isCreated = await _UserManager.CreateAsync(newUser, request.Password);
 			if (isCreated.Succeeded)
 			{

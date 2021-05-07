@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SalkoDev.WebAPI.Models.Auth.Login
 {
-	public class AuthResult: BaseAuthResult
+	public class AuthResult: BaseResponse
 	{
 		public string Token
 		{

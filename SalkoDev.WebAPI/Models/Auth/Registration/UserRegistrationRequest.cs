@@ -8,13 +8,19 @@ namespace SalkoDev.WebAPI.Models.Auth.Registration
 {
 	public class UserRegistrationRequest
 	{
-		//[Required]
-		//public string Username
-		//{
-		//	get;
-		//	set;
-		//}
+		/// <summary>
+		/// Имя пользователя (отображаемое)
+		/// </summary>
+		[Required]
+		public string Name
+		{
+			get;
+			set;
+		}
 
+		/// <summary>
+		/// Логин (email)
+		/// </summary>
 		[Required]
 		[EmailAddress]
 		public string Email

@@ -9,6 +9,25 @@ namespace SalkoDev.EDMS.IdentityProvider.Mongo
 	public class User : IIdentity
 	{
 		/// <summary>
+		/// Отображаемое имя пользователя (атрибут не связан с системой IIdentity)
+		/// </summary>
+		public string UserName
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		/// Организация, к которой привязан пользователь (ее можно задать после регистрации)
+		/// </summary>
+		public MongoDB.Bson.ObjectId OrganizationID
+		{
+			get;
+			set;
+		}
+
+
+		/// <summary>
 		/// (Атрибут от IIdentity)
 		/// </summary>
 		[BsonIgnore]
@@ -29,7 +48,7 @@ namespace SalkoDev.EDMS.IdentityProvider.Mongo
 		}
 
 		/// <summary>
-		/// (Атрибут от IIdentity). У нас не применяется вообще.
+		/// (Атрибут от IIdentity). У нас не применяется вообще - его нельзя использовать для "отображаемого имени", там контроль символов
 		/// </summary>
 		[BsonIgnore]
 		public string Name => Email;

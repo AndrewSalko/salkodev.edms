@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SalkoDev.WebAPI.Models.Auth
+namespace SalkoDev.WebAPI.Models
 {
-	public abstract class BaseAuthResult
+	public abstract class BaseResponse
 	{
 		public bool Success
 		{
