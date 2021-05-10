@@ -4,10 +4,20 @@ using System.Security.Principal;
 using System.Text;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace SalkoDev.EDMS.IdentityProvider.Mongo
+namespace SalkoDev.EDMS.IdentityProvider.Mongo.Db.Users
 {
-	public class User : IIdentity
+	public class User : IIdentity, IUser
 	{
+		/// <summary>
+		/// Техническое поле Id
+		/// </summary>
+		[BsonId]
+		public MongoDB.Bson.ObjectId Id
+		{
+			get;
+			set;
+		}
+
 		/// <summary>
 		/// Отображаемое имя пользователя (атрибут не связан с системой IIdentity)
 		/// </summary>
@@ -18,14 +28,14 @@ namespace SalkoDev.EDMS.IdentityProvider.Mongo
 		}
 
 		/// <summary>
-		/// Организация, к которой привязан пользователь (ее можно задать после регистрации)
+		/// Организация, к которой привязан пользователь (ее можно задать после регистрации).
+		/// Если поле пустое - можно создать свою организацию. Если заполнено - юзер в ней.
 		/// </summary>
-		public MongoDB.Bson.ObjectId OrganizationID
+		public string OrganizationUID
 		{
 			get;
 			set;
 		}
-
 
 		/// <summary>
 		/// (Атрибут от IIdentity)
@@ -60,17 +70,9 @@ namespace SalkoDev.EDMS.IdentityProvider.Mongo
 		public string NormalizedUserName => Name;
 
 		/// <summary>
-		/// Уник.идентификатор юзера
-		/// </summary>
-		[BsonId]
-		public MongoDB.Bson.ObjectId Id
-		{
-			get;
-			set;
-		}
-
-		/// <summary>
-		/// Это логин (основное поле). Он же будет ключом партицирования
+		/// Это логин (основное поле). Он же будет ключом партицирования.
+		/// TODO@: в нашей модели нельзя менять Email-адрес, т.к. это ключ партиции. Это удобно чтобы делать быстро поиск юзера для логина, но плохо для смены адреса.
+		/// UID - юзера сейчас эту задачу "решает" это поле
 		/// </summary>
 		[BsonRequired]
 		public string Email
@@ -78,6 +80,12 @@ namespace SalkoDev.EDMS.IdentityProvider.Mongo
 			get;
 			set;
 		}
+
+		/// <summary>
+		/// Уникальный идентификатор юзера. Сейчас это возвращает поле Email (оно уникальное и ключ партиции)
+		/// </summary>
+		[BsonIgnore]
+		public string UID => Email;
 
 		public bool EmailConfirmed
 		{

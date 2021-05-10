@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SalkoDev.EDMS.IdentityProvider.Mongo;
+using SalkoDev.EDMS.IdentityProvider.Mongo.Db.Users;
 using SalkoDev.WebAPI.Configuration;
 using SalkoDev.WebAPI.Models.Auth;
 using SalkoDev.WebAPI.Models.Auth.ChangePassword;
@@ -190,9 +191,8 @@ namespace SalkoDev.WebAPI
 
 			var authClaims = new Claim[]
 			{
-				new Claim("Id", user.Id.ToString()),
-				new Claim(JwtRegisteredClaimNames.Email, user.Email),
-				new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+				new Claim("Id", user.Id.ToString()),	//user id возможно не обязателен
+				new Claim(JwtRegisteredClaimNames.Sub, user.Email),	//.Sub - имя пользователя (у нас это Email)
 				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
 			};
 

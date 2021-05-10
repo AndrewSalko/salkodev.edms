@@ -129,4 +129,7 @@
   <data name="InvalidPayload" xml:space="preserve">
     <value>Invalid payload</value>
   </data>
+  <data name="UserIsMemberOfOrganization" xml:space="preserve">
+    <value>Current user is a member of organization, can't create new.</value>
+  </data>
 </root>

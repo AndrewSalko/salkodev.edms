@@ -21,6 +21,8 @@ using SalkoDev.WebAPI.Models.Auth.Login;
 using SalkoDev.WebAPI.Models.Auth.Registration;
 using Microsoft.AspNetCore.Authorization;
 using SalkoDev.WebAPI.Models.Orgs.Create;
+using SalkoDev.EDMS.IdentityProvider.Mongo.Db.Organizations;
+using SalkoDev.EDMS.IdentityProvider.Mongo.Db.Users;
 
 namespace SalkoDev.WebAPI.Controllers
 {
@@ -33,59 +35,53 @@ namespace SalkoDev.WebAPI.Controllers
 	[ApiController]
 	public class OrgsController : ControllerBase
 	{
+		readonly UserManager<User> _UserManager;
+		readonly IUserStoreEx _UserStoreEx;
+		readonly IOrganizationStore _OrganizationStore;
+
+		public OrgsController(UserManager<User> userManager, IOrganizationStore organizationStore, IUserStoreEx userStoreEx)
+		{
+			_UserManager = userManager;
+			_OrganizationStore = organizationStore;
+			_UserStoreEx = userStoreEx;
+		}
+
 
 		[HttpPost]
 		[Route("Create")]
 		public async Task<IActionResult> Create([FromBody] OrganizationCreateRequest request)
 		{
 			if (!ModelState.IsValid)
-				return BadRequest(new RegistrationResponse(Resource.InvalidPayload, false));
+				return BadRequest(new OrganizationCreateResponse(Resource.InvalidPayload, false));
 
-			throw new NotImplementedException();
+			//Найти юзера по авторизац.токену. claimsPrincipal.Identity тут не помог (там визуально ничего нет)
+			var user = await UserFromClaim.GetUser(_UserManager, HttpContext.User);
+			if (user == null)
+				return BadRequest(new OrganizationCreateResponse(Resource.InvalidLoginRequest, false));
 
-			//var existingUser = await _UserManager.FindByEmailAsync(request.Email);
+			//Если пользователь состоит в организации создавать новую нельзя. Чтобы создать,
+			//нужно вначале покинуть организацию. Если он создает, то автоматом становится ее членом.
+			if (!string.IsNullOrEmpty(user.OrganizationUID))
+			{
+				return BadRequest(new OrganizationCreateResponse(Resource.UserIsMemberOfOrganization, false));
+			}
 
-			//if (existingUser != null)
-			//{
-			//	return BadRequest(new RegistrationResponse(Resource.EmailAlreadyInUse, false));
-			//}
 
-			//var newUser = new User()
-			//{
-			//	Email = request.Email,
-			//	UserName = request.Name
-			//};
+			var org = await _OrganizationStore.Create(request.Name, request.FullName, user.UID);
 
-			//var isCreated = await _UserManager.CreateAsync(newUser, request.Password);
-			//if (isCreated.Succeeded)
-			//{
-			//	string emailConfirmToken = await _UserManager.GenerateEmailConfirmationTokenAsync(newUser);
+			//также нужно прописать в юзера в свойство что он уже создал организацию...
+			//TODO@: плохо с транзакционностью - можно создать организацию, но упасть на изменении юзера (не пропишется ему свойство)
 
-			//	//отправить его на заданный адрес почты
-			//	string htmlBody = $"emailConfirmToken: {emailConfirmToken}";
+			await _UserStoreEx.SetUserOrganizationAsync(user, org.UID);
 
-			//	await _EmailSender.SendEmailAsync(request.Email, "Confirm registration", htmlBody);
+			return Ok(new OrganizationCreateResponse()
+			{
+				Success = true,
+				UID = org.UID
+			});
 
-			//	var jwtToken = _GenerateJwtToken(newUser);
 
-			//	return Ok(new RegistrationResponse()
-			//	{
-			//		Success = true,
-			//		Token = jwtToken.JWT,
-			//		Expires = jwtToken.Expires
-			//	});
-			//}
-			//else
-			//{
-			//	return BadRequest(new RegistrationResponse()
-			//	{
-			//		Errors = isCreated.Errors.Select(x => x.Description).ToList(),
-			//		Success = false
-			//	});
-			//}
 		}
-
-
 
 
 	}

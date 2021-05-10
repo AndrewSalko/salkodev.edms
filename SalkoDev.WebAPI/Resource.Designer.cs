@@ -95,5 +95,14 @@ namespace SalkoDev.WebAPI {
                 return ResourceManager.GetString("InvalidPayload", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current user is a member of organization, can&apos;t create new..
+        /// </summary>
+        internal static string UserIsMemberOfOrganization {
+            get {
+                return ResourceManager.GetString("UserIsMemberOfOrganization", resourceCulture);
+            }
+        }
     }
 }

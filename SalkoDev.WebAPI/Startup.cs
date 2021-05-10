@@ -23,6 +23,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SalkoDev.EDMS.IdentityProvider.Mongo.Db.Organizations;
+using SalkoDev.EDMS.IdentityProvider.Mongo.Db.Users;
 
 namespace SalkoDev.WebAPI
 {
@@ -51,6 +53,10 @@ namespace SalkoDev.WebAPI
 			// Identity Services
 			services.AddTransient<IUserStore<User>, UserStore>();
 			services.AddTransient<IRoleStore<Role>, RoleStore>();
+
+			services.AddTransient<IUserStoreEx, UserStore>();
+
+			services.AddTransient<IOrganizationStore, OrganizationStore>();
 
 			//string connectionString = Configuration.GetConnectionString("DefaultConnection");
 			//services.AddTransient<SqlConnection>(e => new SqlConnection(connectionString));

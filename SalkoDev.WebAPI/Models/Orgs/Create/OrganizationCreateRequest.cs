@@ -30,9 +30,5 @@ namespace SalkoDev.WebAPI.Models.Orgs.Create
 			get;
 			set;
 		}
-
-
-
-
 	}
 }

@@ -26,15 +26,30 @@ namespace SalkoDev.EDMS.IdentityProvider.Mongo.Db.Organizations
 
 			if (createIndexes)
 			{
-				//применим индекс
-				var keysName = Builders<Organization>.IndexKeys.Ascending(x => x.Name);
-				CreateIndexOptions optsName = null; //new CreateIndexOptions() { Unique = true  };  //нельзя..вероятно?
-				var modelName = new CreateIndexModel<Organization>(keysName, optsName);
+				//индекс по имени
+				CreateIndexModel<Organization> modelName;
+				{
+					var keysName = Builders<Organization>.IndexKeys.Ascending(x => x.Name);
+					CreateIndexOptions optsName = null; //new CreateIndexOptions() { Unique = true  };  //нельзя..вероятно?
+					modelName = new CreateIndexModel<Organization>(keysName, optsName);
+				}
 
-				var keysFullName = Builders<Organization>.IndexKeys.Ascending(x => x.FullName);
-				var modelFullName = new CreateIndexModel<Organization>(keysFullName, null);
+				//индекс по полному имени
+				CreateIndexModel<Organization> modelFullName;
+				{
+					var keysFullName = Builders<Organization>.IndexKeys.Ascending(x => x.FullName);
+					modelFullName = new CreateIndexModel<Organization>(keysFullName, null);
+				}
 
-				CreateIndexModel<Organization>[] indexModels = { modelName, modelFullName };
+				//индекс по UID
+				CreateIndexModel<Organization> modelUID;
+				{
+					var keysUID = Builders<Organization>.IndexKeys.Ascending(x => x.UID);
+					CreateIndexOptions optsUID = new CreateIndexOptions() { Unique = true };  //UID организации должен быть уникальный
+					modelUID = new CreateIndexModel<Organization>(keysUID, optsUID);
+				}
+
+				CreateIndexModel<Organization>[] indexModels = { modelName, modelFullName, modelUID };
 				Organizations.Indexes.CreateMany(indexModels);
 			}
 		}

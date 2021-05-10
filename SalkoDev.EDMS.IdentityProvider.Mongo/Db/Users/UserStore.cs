@@ -12,13 +12,13 @@ using SalkoDev.BaseClasses;
 using SalkoDev.EDMS.IdentityProvider.Mongo.Db;
 using SalkoDev.EDMS.IdentityProvider.Mongo.Db.Users;
 
-namespace SalkoDev.EDMS.IdentityProvider.Mongo
+namespace SalkoDev.EDMS.IdentityProvider.Mongo.Db.Users
 {
-	public class UserStore : DisposableBase, IUserStore<User>, IUserPasswordStore<User>, IUserEmailStore<User>
+	public class UserStore : DisposableBase, IUserStore<User>, IUserPasswordStore<User>, IUserEmailStore<User>, IUserStoreEx
 	{
 		//https://www.eximiaco.tech/en/2019/07/27/writing-an-asp-net-core-identity-storage-provider-from-scratch-with-ravendb/
 
-		IMongoCollection<User> _Users;
+		readonly IMongoCollection<User> _Users;
 
 		public UserStore(IDatabase db)
 		{
@@ -125,7 +125,7 @@ namespace SalkoDev.EDMS.IdentityProvider.Mongo
 
 			var resultUser = await (from userDB in _Users.AsQueryable() where userDB.Id == id select userDB).FirstOrDefaultAsync(cancellationToken);
 			if (resultUser == null)
-				throw new ArgumentException($"User Id {id.ToString()}");
+				throw new ArgumentException($"User Id {id}");
 
 			var filter = Builders<User>.Filter.Eq(x => x.Id, id);
 
@@ -225,6 +225,25 @@ namespace SalkoDev.EDMS.IdentityProvider.Mongo
 		}
 
 		#endregion
+
+		public async Task SetUserOrganizationAsync(IUser user, string orgUID)
+		{
+			if (user.OrganizationUID == orgUID)
+				return;
+
+			var filter = Builders<User>.Filter.Eq(x => x.Id, user.Id);
+
+			List<UpdateDefinition<User>> updateList = new List<UpdateDefinition<User>>();
+
+			var upd = Builders<User>.Update.Set(x => x.OrganizationUID, orgUID);
+			updateList.Add(upd);
+
+			if (updateList.Count > 0)
+			{
+				var complexUpd = Builders<User>.Update.Combine(updateList);
+				var updateResult = await _Users.UpdateOneAsync(filter, complexUpd);
+			}
+		}
 
 
 		protected override void _Dispose(bool disposing)
