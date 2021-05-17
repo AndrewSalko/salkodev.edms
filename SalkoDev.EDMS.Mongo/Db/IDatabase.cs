@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using MongoDB.Driver;
 
-namespace SalkoDev.EDMS.IdentityProvider.Mongo.Db
+namespace SalkoDev.EDMS.Mongo.Db
 {
 	public interface IDatabase
 	{

@@ -4,7 +4,7 @@ using System.Security.Authentication;
 using System.Text;
 using MongoDB.Driver;
 
-namespace SalkoDev.EDMS.IdentityProvider.Mongo.Db
+namespace SalkoDev.EDMS.Mongo.Db
 {
 	public class Database: IDatabase
 	{

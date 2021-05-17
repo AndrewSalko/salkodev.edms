@@ -11,7 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalkoDev.BaseClasses", "Sal
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalkoDev.WebAPI", "SalkoDev.WebAPI\SalkoDev.WebAPI.csproj", "{2FC260AF-D589-442D-AF24-03CB54B6E6D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalkoDev.EmailSend", "SalkoDev.EmailSend\SalkoDev.EmailSend.csproj", "{8AAC7819-A955-4D72-96A7-8DAED88BD955}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalkoDev.EmailSend", "SalkoDev.EmailSend\SalkoDev.EmailSend.csproj", "{8AAC7819-A955-4D72-96A7-8DAED88BD955}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalkoDev.EDMS.Documents.Mongo", "SalkoDev.EDMS.Documents.Mongo\SalkoDev.EDMS.Documents.Mongo.csproj", "{2F3BA92A-8013-4B8E-AAA1-BAFCDF283816}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalkoDev.EDMS.Mongo", "SalkoDev.EDMS.Mongo\SalkoDev.EDMS.Mongo.csproj", "{C2BDC8D6-C749-461C-A143-E0317D6918E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{8AAC7819-A955-4D72-96A7-8DAED88BD955}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8AAC7819-A955-4D72-96A7-8DAED88BD955}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AAC7819-A955-4D72-96A7-8DAED88BD955}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F3BA92A-8013-4B8E-AAA1-BAFCDF283816}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F3BA92A-8013-4B8E-AAA1-BAFCDF283816}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F3BA92A-8013-4B8E-AAA1-BAFCDF283816}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F3BA92A-8013-4B8E-AAA1-BAFCDF283816}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2BDC8D6-C749-461C-A143-E0317D6918E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2BDC8D6-C749-461C-A143-E0317D6918E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2BDC8D6-C749-461C-A143-E0317D6918E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2BDC8D6-C749-461C-A143-E0317D6918E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

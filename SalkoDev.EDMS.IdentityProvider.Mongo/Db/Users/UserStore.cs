@@ -11,6 +11,7 @@ using MongoDB.Driver.Linq;
 using SalkoDev.BaseClasses;
 using SalkoDev.EDMS.IdentityProvider.Mongo.Db;
 using SalkoDev.EDMS.IdentityProvider.Mongo.Db.Users;
+using SalkoDev.EDMS.Mongo.Db;
 
 namespace SalkoDev.EDMS.IdentityProvider.Mongo.Db.Users
 {

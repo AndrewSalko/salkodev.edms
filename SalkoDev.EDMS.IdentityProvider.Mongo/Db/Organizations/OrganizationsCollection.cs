@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using MongoDB.Driver;
+using SalkoDev.EDMS.Mongo.Db;
 
 namespace SalkoDev.EDMS.IdentityProvider.Mongo.Db.Organizations
 {

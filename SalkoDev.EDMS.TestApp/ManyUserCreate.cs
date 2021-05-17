@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SalkoDev.EDMS.IdentityProvider.Mongo.Db;
 using SalkoDev.EDMS.IdentityProvider.Mongo.Db.Users;
+using SalkoDev.EDMS.Mongo.Db;
 
 namespace SalkoDev.EDMS.TestApp
 {

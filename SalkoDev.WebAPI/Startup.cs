@@ -25,6 +25,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SalkoDev.EDMS.IdentityProvider.Mongo.Db.Organizations;
 using SalkoDev.EDMS.IdentityProvider.Mongo.Db.Users;
+using SalkoDev.EDMS.Mongo.Db;
 
 namespace SalkoDev.WebAPI
 {

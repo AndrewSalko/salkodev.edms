@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Driver;
+using SalkoDev.EDMS.Mongo.Db;
 
 namespace SalkoDev.EDMS.IdentityProvider.Mongo.Db.Organizations
 {
