@@ -132,4 +132,7 @@
   <data name="UserIsMemberOfOrganization" xml:space="preserve">
     <value>Current user is a member of organization, can't create new.</value>
   </data>
+  <data name="UserIsNotAMemberOfAnyOrganization" xml:space="preserve">
+    <value>Current user is not a member of any organization, work with documents is not allowed</value>
+  </data>
 </root>

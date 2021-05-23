@@ -122,25 +122,25 @@ namespace SalkoDev.WebAPI
 		public async Task<IActionResult> Login([FromBody] UserLoginRequest request)
 		{
 			if (!ModelState.IsValid)
-				return BadRequest(new RegistrationResponse(Resource.InvalidPayload, false));
+				return BadRequest(UserLoginResponse.Failed(Resource.InvalidPayload));
 
 			var existingUser = await _UserManager.FindByEmailAsync(request.Email);
 			if (existingUser == null)
 			{
-				return BadRequest(new RegistrationResponse(Resource.InvalidLoginRequest, false));
+				return BadRequest(UserLoginResponse.Failed(Resource.InvalidLoginRequest));
 			}
 
 			var isCorrect = await _UserManager.CheckPasswordAsync(existingUser, request.Password);
 			if (!isCorrect)
 			{
-				return BadRequest(new RegistrationResponse(Resource.InvalidLoginRequest, false));
+				return BadRequest(UserLoginResponse.Failed(Resource.InvalidLoginRequest));
 			}
 
 			//убедиться что Email подтвержден
 			bool emailConfirmed = await _UserManager.IsEmailConfirmedAsync(existingUser);
 			if (!emailConfirmed)
 			{
-				return BadRequest(new RegistrationResponse(Resource.EmailNotConfirmed, false));
+				return BadRequest(UserLoginResponse.Failed(Resource.EmailNotConfirmed));
 			}
 
 			var jwtToken = _GenerateJwtToken(existingUser);
@@ -158,12 +158,12 @@ namespace SalkoDev.WebAPI
 		public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
 		{
 			if (!ModelState.IsValid)
-				return BadRequest(new RegistrationResponse(Resource.InvalidPayload, false));
+				return BadRequest(UserLoginResponse.Failed(Resource.InvalidPayload));
 
 			var existingUser = await _UserManager.FindByEmailAsync(request.Email);
 			if (existingUser == null)
 			{
-				return BadRequest(new RegistrationResponse(Resource.InvalidLoginRequest, false));
+				return BadRequest(UserLoginResponse.Failed(Resource.InvalidLoginRequest));
 			}
 
 			//юзер менеджер сам сверит текущий пароль

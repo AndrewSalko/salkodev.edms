@@ -104,5 +104,14 @@ namespace SalkoDev.WebAPI {
                 return ResourceManager.GetString("UserIsMemberOfOrganization", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current user is not a member of any organization, work with documents is not allowed.
+        /// </summary>
+        internal static string UserIsNotAMemberOfAnyOrganization {
+            get {
+                return ResourceManager.GetString("UserIsNotAMemberOfAnyOrganization", resourceCulture);
+            }
+        }
     }
 }
