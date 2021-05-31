@@ -8,13 +8,14 @@ using SalkoDev.EDMS.IdentityProvider.Mongo.Db.Users;
 using Microsoft.AspNetCore.Identity;
 using SalkoDev.EDMS.IdentityProvider.Mongo.Db.Organizations;
 using SalkoDev.WebAPI.Models.Auth.Login;
+using SalkoDev.WebAPI.Models.Counterparties;
 
 namespace SalkoDev.WebAPI.Controllers
 {
 	[Authorize]
 	[Route("api/[controller]")]
 	[ApiController]
-	public class CounterpartiesController: ControllerBase
+	public class CounterpartiesController : ControllerBase
 	{
 		readonly UserManager<User> _UserManager;
 		readonly IOrganizationStore _OrganizationStore;
@@ -63,6 +64,21 @@ namespace SalkoDev.WebAPI.Controllers
 			//limit=25&offset=50
 
 			return _TEST_COUNTERPARTIES;
+		}
+
+		[HttpGet("{name}&searchOption={searchOption}")]
+		public async Task<IActionResult> GetItemByName(string name, SearchOption searchOption)
+		{
+			var user = await UserFromClaim.GetUser(_UserManager, HttpContext.User);
+			if (user == null)
+				return BadRequest(UserLoginResponse.Failed(Resource.InvalidLoginRequest));
+
+			if (string.IsNullOrEmpty(user.OrganizationUID))
+			{
+				return BadRequest(UserLoginResponse.Failed(Resource.UserIsNotAMemberOfAnyOrganization));
+			}
+
+			return NotFound();
 		}
 
 
