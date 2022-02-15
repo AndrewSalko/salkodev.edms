@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31112.23
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalkoDev.EDMS.TestApp", "SalkoDev.EDMS.TestApp\SalkoDev.EDMS.TestApp.csproj", "{B7151F5A-84F2-43D2-885D-CEF258300873}"
 EndProject
@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalkoDev.EmailSend", "Salko
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalkoDev.EDMS.Documents.Mongo", "SalkoDev.EDMS.Documents.Mongo\SalkoDev.EDMS.Documents.Mongo.csproj", "{2F3BA92A-8013-4B8E-AAA1-BAFCDF283816}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalkoDev.EDMS.Mongo", "SalkoDev.EDMS.Mongo\SalkoDev.EDMS.Mongo.csproj", "{C2BDC8D6-C749-461C-A143-E0317D6918E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalkoDev.EDMS.Mongo", "SalkoDev.EDMS.Mongo\SalkoDev.EDMS.Mongo.csproj", "{C2BDC8D6-C749-461C-A143-E0317D6918E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalkoDev.WebAPI.Integration.Tests", "SalkoDev.WebAPI.Integration.Tests\SalkoDev.WebAPI.Integration.Tests.csproj", "{4510CB92-307F-4803-A9B3-A516EEDFD76E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{C2BDC8D6-C749-461C-A143-E0317D6918E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2BDC8D6-C749-461C-A143-E0317D6918E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2BDC8D6-C749-461C-A143-E0317D6918E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4510CB92-307F-4803-A9B3-A516EEDFD76E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4510CB92-307F-4803-A9B3-A516EEDFD76E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4510CB92-307F-4803-A9B3-A516EEDFD76E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4510CB92-307F-4803-A9B3-A516EEDFD76E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

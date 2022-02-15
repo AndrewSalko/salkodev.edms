@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 
 namespace SalkoDev.WebAPI.Models.Auth.Login
 {

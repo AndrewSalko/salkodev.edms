@@ -1,24 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Http;
-using Microsoft.IdentityModel.Tokens;
-using SalkoDev.EDMS.IdentityProvider.Mongo;
-using SalkoDev.WebAPI.Configuration;
-using SalkoDev.WebAPI.Models.Auth;
-using SalkoDev.WebAPI.Models.Auth.ChangePassword;
-using SalkoDev.WebAPI.Models.Auth.Confirmation;
-using SalkoDev.WebAPI.Models.Auth.Login;
-using SalkoDev.WebAPI.Models.Auth.Registration;
 using Microsoft.AspNetCore.Authorization;
 using SalkoDev.WebAPI.Models.Orgs.Create;
 using SalkoDev.EDMS.IdentityProvider.Mongo.Db.Organizations;
