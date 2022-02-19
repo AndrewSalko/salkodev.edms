@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using SalkoDev.EDMS.IdentityProvider.Mongo.Db.Organizations;
 using SalkoDev.WebAPI.Models.Auth.Login;
 using SalkoDev.WebAPI.Models.Counterparties;
+using SalkoDev.WebAPI.Models.Search;
 
 namespace SalkoDev.WebAPI.Controllers
 {

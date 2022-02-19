@@ -39,5 +39,12 @@ namespace SalkoDev.EDMS.IdentityProvider.Mongo.Db.Users
 			get;
 		}
 
+		bool EmailConfirmed
+		{
+			get;
+			set;
+		}
+
+
 	}
 }

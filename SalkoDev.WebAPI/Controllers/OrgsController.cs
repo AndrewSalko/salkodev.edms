@@ -41,13 +41,13 @@ namespace SalkoDev.WebAPI.Controllers
 			if (user == null)
 				return BadRequest(new OrganizationCreateResponse(Resource.InvalidLoginRequest, false));
 
+			if(!user.EmailConfirmed)
+				return BadRequest(new OrganizationCreateResponse(Resource.EmailNotConfirmed, false));
+
 			//Если пользователь состоит в организации создавать новую нельзя. Чтобы создать,
 			//нужно вначале покинуть организацию. Если он создает, то автоматом становится ее членом.
 			if (!string.IsNullOrEmpty(user.OrganizationUID))
-			{
 				return BadRequest(new OrganizationCreateResponse(Resource.UserIsMemberOfOrganization, false));
-			}
-
 
 			var org = await _OrganizationStore.Create(request.Name, request.FullName, user.UID);
 

@@ -30,7 +30,6 @@ namespace SalkoDev.EDMS.IdentityProvider.Mongo.Db.Users
 
 			if (createIndexes)
 			{
-				//применим индекс (имя юзера)
 				var keysEmail = Builders<User>.IndexKeys.Ascending(x => x.Email);
 				var optsEmail = new CreateIndexOptions() { Unique = true };
 				var modelEmail = new CreateIndexModel<User>(keysEmail, optsEmail);
